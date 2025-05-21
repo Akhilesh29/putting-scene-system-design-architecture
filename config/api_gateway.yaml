@@ -1,0 +1,111 @@
+api_gateway:
+  port: 8080
+  host: 0.0.0.0
+  cors:
+    allowed_origins: ["*"]
+    allowed_methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
+    allowed_headers: ["Content-Type", "Authorization"]
+    max_age: 3600
+
+  rate_limiting:
+    enabled: true
+    default_limit: 100
+    default_window: 60  # seconds
+    limits:
+      /api/v1/events:
+        limit: 1000
+        window: 60
+      /api/v1/search:
+        limit: 500
+        window: 60
+      /api/v1/users:
+        limit: 50
+        window: 60
+
+  services:
+    event_service:
+      url: "http://event-service:8081"
+      timeout: 5000  # milliseconds
+      retry:
+        attempts: 3
+        initial_delay: 100
+        max_delay: 1000
+
+    venue_service:
+      url: "http://venue-service:8082"
+      timeout: 5000
+      retry:
+        attempts: 3
+        initial_delay: 100
+        max_delay: 1000
+
+    user_service:
+      url: "http://user-service:8083"
+      timeout: 5000
+      retry:
+        attempts: 3
+        initial_delay: 100
+        max_delay: 1000
+
+    search_service:
+      url: "http://search-service:8084"
+      timeout: 5000
+      retry:
+        attempts: 3
+        initial_delay: 100
+        max_delay: 1000
+
+  routes:
+    - path: /api/v1/events
+      service: event_service
+      methods: ["GET", "POST", "PUT", "DELETE"]
+      auth_required: true
+      rate_limit: "events"
+
+    - path: /api/v1/venues
+      service: venue_service
+      methods: ["GET", "POST", "PUT", "DELETE"]
+      auth_required: true
+      rate_limit: "venues"
+
+    - path: /api/v1/users
+      service: user_service
+      methods: ["GET", "POST", "PUT", "DELETE"]
+      auth_required: true
+      rate_limit: "users"
+
+    - path: /api/v1/search
+      service: search_service
+      methods: ["GET"]
+      auth_required: false
+      rate_limit: "search"
+
+  authentication:
+    jwt:
+      secret: "${JWT_SECRET}"
+      algorithm: "HS256"
+      expiration: 3600  # seconds
+      refresh_expiration: 604800  # 7 days
+
+  logging:
+    level: "info"
+    format: "json"
+    output: "stdout"
+    fields:
+      service: "api-gateway"
+      environment: "${ENV}"
+
+  metrics:
+    enabled: true
+    port: 9090
+    path: "/metrics"
+    labels:
+      service: "api-gateway"
+      environment: "${ENV}"
+
+  health_check:
+    enabled: true
+    interval: 30  # seconds
+    timeout: 5  # seconds
+    unhealthy_threshold: 3
+    healthy_threshold: 2 
