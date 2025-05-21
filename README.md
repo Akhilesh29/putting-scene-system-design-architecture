@@ -99,7 +99,7 @@
 1. **Caching Strategy**
    - L1 Cache: In-memory cache for frequently accessed data
    - L2 Cache: Redis for distributed caching
-   - Cache invalidation based on event updates
+   - L3 Cache: Database for persistent storage
 
 2. **Database Optimization**
    - Indexed fields for common queries
