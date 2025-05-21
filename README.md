@@ -64,6 +64,3 @@
 - gRPC
 - Protocol Buffers
 - Boost Libraries
-
-## Build and Run Instructions
-[To be added] 
