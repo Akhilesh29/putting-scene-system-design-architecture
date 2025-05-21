@@ -165,39 +165,3 @@ putting-scene/
         └── EventServiceImpl.cpp
 ```
 
-## 🚀 Getting Started
-
-1. **Prerequisites**
-   - C++17/20 compiler
-   - CMake 3.15+
-   - PostgreSQL 12+
-   - Redis 6+
-   - Elasticsearch 7+
-
-2. **Build Instructions**
-   ```bash
-   mkdir build && cd build
-   cmake ..
-   make
-   ```
-
-3. **Configuration**
-   - Copy `config/api_gateway.yaml.example` to `config/api_gateway.yaml`
-   - Update configuration with your settings
-
-4. **Running the Application**
-   ```bash
-   ./bin/putting_scene_app
-   ```
-
-## 📝 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request 
